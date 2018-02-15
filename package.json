@@ -1,0 +1,46 @@
+{
+  "author": "Yeltzin Salvador Illanes Gomez",
+  "name": "garuda",
+  "version": "1.0.0",
+  "description": "NodeJS.",
+  "main": "node app.js",
+  "dependencies": {
+    "bookshelf": "0.10.x",
+    "cookie-parse": "0.4.x",
+    "cookie-parser": "1.4.x",
+    "crypto": "1.0.x",
+    "express": "4.16.x",
+    "express-session": "1.15.x",
+    "knex": "0.13.x",
+    "nconf": "0.8.x",
+    "nodemon": "1.12.x",
+    "passport": "0.4.x",
+    "passport-local": "1.0.x",
+    "passport-twitter": "1.0.x",
+    "path": "^0.12.7",
+    "pg": "^7.3.0",
+    "twitter": "^1.7.1",
+    "winston": "^2.4.0"
+  },
+  "scripts": {
+    "test": "node app.js",
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "6.11.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StarBlizard/curso.git"
+  },
+  "keywords": [
+    "twitter",
+    "nodejs",
+    "bookshelf"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StarBlizard/curso/issues"
+  },
+  "homepage": "https://github.com/StarBlizard/curso#readme"
+}
