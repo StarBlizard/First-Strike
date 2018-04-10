@@ -1,25 +1,38 @@
 {
-  "database" : {
-    "client"     : "pg",
-    "version"    : "9.6",
-    "connection" : {
-      "host"     : "ec2-54-243-47-252.compute-1.amazonaws.com",
-      "port"     : "5432",
-      "user"     : "gtymdzvqlvzema",
-      "password" : "7872f18ac8861eb99132e43533d7c6f9ec96448c5d9b390e5460ce5467b26b31",
-      "database" : "de8sfalfr0r156",
-      "charset"  : "utf8"
+  "PORT" 	  : 80,
+  "wifi"    : {
+    "default" : {
+      "interface"        : "wlp2s0b1"
+    },
+    "ifconfig" : {
+      "ipv4_address"     : "192.168.0.1",
+      "ipv4_broadcast"   : "192.168.0.255",
+      "ipv4_subnet_mask" : "255.255.255.0",
+      "options" : {
+        "interface"      : "wlp2s0b1"
+      }
+    },
+    "network" : {
+      "ssid"      : "First Strike",
+      "passphrase": "5tr1g0nT34m",
+      "driver"    : "nl80211"
+    },
+    "hotspot" : {
+      "channel"       : 6,
+      "driver"        : "nl80211",
+      "hw_mode"       : "g",
+      "ssid"          : "First Strike",
+      "wpa"           : 2,
+      "wpa_passphrase": "5tr1g0nT34m"
+    },
+    "dhcp"    : {
+      "start"     : "192.168.10.100",
+      "end"       : "192.168.10.200",
+      "option"    : {
+        "router" : "192.168.0.1",
+        "subnet" : "255.255.255.0",
+        "dns"    : [ "192.168.0.1", "8.8.8.8" ]
+      }
     }
-  },
-  "PORT" 	        : 80,
-  "api" 	        : "/api/v1",
-  "STORAGE_PATH"  : "storage/da4b9237bacccdf19c0760cab7aec4a8359010b0",
-  "jwtPrivateKey" : "secret",
-  "domain"        : "https://garuda-by-blizzard.herokuapp.com/",
-  "twitter" : {
-    "consumerKey"       : "2NIKq26Xbhdl5q1XAbPppw0mA",
-    "consumerSecret"    : "5nX8HK7Nx6ioQ3lXCJ2Fs8LNTBgBaUolgECupJRMUL9rR7hnNn",
-    "accessToken"       : "920883669115469824-tPu1DLt8YGST1p3YxlP866F6YG31dQk",
-    "accessSecretToken" : "pLZ74OXYoGM9FfKjTH1BJqb4wTHWzMqRSfoPnppbbGoIq"
   }
 }

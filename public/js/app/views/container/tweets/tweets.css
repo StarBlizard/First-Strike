@@ -1,0 +1,8 @@
+#container{
+  width      : 80%;
+  float      : right;
+  height     : 90%;
+  padding    : 15px;
+  overflow-y : scroll;
+  overflow-x : hidden;
+}
