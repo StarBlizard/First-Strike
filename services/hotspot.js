@@ -1,68 +1,70 @@
 /*
  * Hotspot fo gameee
- * WEBSERVER SOCKET WILL BE 10.42.0.1
+ * to kill hotspot  --> sudo killall hostapd
+ * to allow hotspot --> sudo killall wpa_supplicant
+ * to restore wifi  --> sudo rfkill unblock all
  *
- * TODO
- * 1.- Get wifi interface name
+ * TASKS:
+ * 1.- Verify if I can create the hotpost service without disconnectig the current network
  *
+ * gedit /etc/NetworkManager/system-connections/${networkName}
  */
 
 'use strict';
 
-const _           = require('underscore');
-const nconf       = require('nconf');
-const iwconfig    = require('wireless-tools/iwconfig');
-const command     = require('../lib/command');
-const Logger      = require('../lib/logger');
-const colorfilter = require('../lib/colorfilter');
+const hostapd        = require('wireless-tools/hostapd');
+const ifconfig       = require('wireless-tools/ifconfig');
+const _              = require('underscore');
+const nconf          = require('nconf');
+const command        = require('../lib/command');
 
 module.exports = {
 
   // Maybe install hostapd???
   // TODO: get driver data, detect if a wifi is connected, and kill it if it is
   start(){
-    this.networkOptions = _.extend(nconf.get('wifi:network') , nconf.get('wifi:default'));
+    this.hotspotOptions = _.extend(nconf.get('wifi:hotspot')   , nconf.get('wifi:default'));
+    this.ifOptions      = _.extend(nconf.get('wifi:ifconfig')  , nconf.get('wifi:default'));
+
+    // To know if a wifi is connected, the command is "nmcli n"
+
+//    let killwifi = command("nmcli networking off");
+    let killwifi = command("sudo killall hostapd");
+
+    /*
+    migration.stdout.on('data', data => {
+      Logger.info(colorfilter.filtrate(data));
+    });
+    migration.stderr.on('data', warn => {
+      Logger.warn(colorfilter.filtrate(warn));
+    });
+    */
+
 
     return new Promise(( resolve, reject ) => {
-
-      iwconfig.status( status => {
-        console.log(status);
-        if(_.find(status, function(network){ return network.interface === this.networkOptions.ssid; })){
-          return resolve();
+      killwifi.on('close', code =>{
+        if(code != 0){
+          //        return reject('Killing wifi failed');
         }
-        return this.createHotspot(resolve, reject);
-      } );
+        this.enable(resolve, reject);
+      });
     });
   },
 
-  createHotspot : function(resolve, reject){
+  enable(resolve, reject){
+    hostapd.enable(this.hotspotOptions, (err) => {
+      //        if(err){ console.log("[HOTSPOT]: ERROR", err); return reject(); }
 
-    let commandString = `sudo nmcli dev wifi hotspot `               +
-      `ifname '${this.networkOptions.interface}' ` +
-      `con-name '${this.networkOptions.ssid}' `    +
-      `ssid '${this.networkOptions.ssid}' `        +
-      `password '${this.networkOptions.passphrase}'`;
-
-    console.log(commandString)
-
-    let startHotspot = command(commandString, {shell : true});
-
-    startHotspot.stdout.on('data', data => {
-      Logger.info(colorfilter.filtrate(data));
+      console.log("[HOTSPOT]: OK");
+      this.setupNetwork(resolve, reject);
     });
+  },
 
-    startHotspot.stderr.on('data', warn => {
-      Logger.warn(colorfilter.filtrate(warn));
-    });
-
-
-    return startHotspot.on('close', code =>{
-      if(code != 0){
-        console.log("[HOTSPOT]: Error: ", code);
-        return reject();
-      }
-      console.log("[HOTSPOT]: Enabled");
-      return resolve();
+  setupNetwork(resolve, reject){
+    ifconfig.up(this.ifOptions, (err) => {
+      if(err){ console.log("[HOTSPOT]: SETUP ERROR", err); return reject(); }
+      console.log("[HOTSPOT]: SETUP OK");
+      resolve();
     });
   }
 };

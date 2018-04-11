@@ -2,13 +2,28 @@
   "PORT" 	  : 80,
   "wifi"    : {
     "default" : {
-      "interface" : "wlp2s0b1"
+      "interface"        : "wlp2s0b1"
     },
     "network" : {
-      "interface" : "wlp2s0b1",
       "ssid"      : "First Strike",
       "passphrase": "5tr1g0nT34m",
       "driver"    : "nl80211"
+    },
+    "ifconfig" : {
+      "ipv4_address"     : "10.42.0.1",
+      "ipv4_broadcast"   : "10.42.0.255",
+      "ipv4_subnet_mask" : "255.255.255.0",
+      "options" : {
+        "interface"      : "wlp2s0b1"
+      }
+    },
+    "hotspot" : {
+      "channel"       : 6,
+      "driver"        : "nl80211",
+      "hw_mode"       : "g",
+      "ssid"          : "First Strike",
+      "wpa"           : 2,
+      "wpa_passphrase": "5tr1g0nT34m"
     },
     "dhcp"    : {
       "start"     : "10.42.0.100",
