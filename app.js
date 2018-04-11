@@ -3,18 +3,15 @@
 // Start configuration service
 require('nconf').argv().env().file({ file: 'config/config.json' });
 
-// Start winston logger
-require('./services/winston').start();
-
 // Start hotspot
-require('./services/hotspot').start();
+require('./services/hotspot').start().then(() => {
+  // Start database
+  //require('./services/database').start();
 
-// Start database
-//require('./services/database').start();
+  //Start server
+  require('./services/server').start();
 
-//Start server
-require('./services/server').start();
+  //Load routes
+  require('./routes');
+});
 
-
-//Load routes
-require('./routes');

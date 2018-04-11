@@ -8,7 +8,7 @@ const express 	   = require('express');
 const bodyParser   = require('body-parser');
 const path         = require('path');
 //const passport 	   = require('./passport.js').passport;
-const Logger       = require('./winston.js').logger;
+const Logger       = require('../lib/logger.js');
 
 module.exports = {
 
