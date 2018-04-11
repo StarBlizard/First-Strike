@@ -12,7 +12,6 @@
 
 'use strict';
 
-const hostapd        = require('wireless-tools/hostapd');
 const ifconfig       = require('wireless-tools/ifconfig');
 const _              = require('underscore');
 const nconf          = require('nconf');
@@ -29,7 +28,12 @@ module.exports = {
     // To know if a wifi is connected, the command is "nmcli n"
 
 //    let killwifi = command("nmcli networking off");
-    let killwifi = command("killall hostapd");
+
+    let startHotspot = command('sudo nmcli dev wifi hotspot'   +
+                                ' ifname '   + wlp2s0b1         +
+                                ' con-name ' + GRETAYEL         +
+                                ' ssid '     + '"First Strike"' +
+                                ' password ' + '5tr1g0nT34m');
 
     /*
     migration.stdout.on('data', data => {
@@ -41,11 +45,11 @@ module.exports = {
     */
 
 
-    killwifi.on('close', code =>{
+    startHotspot.on('close', code =>{
       if(code != 0){
 //        return reject('Killing wifi failed');
       }
-      this.enable();
+      console.log("[HOTSPOT]: Enabled")
     });
   },
 
