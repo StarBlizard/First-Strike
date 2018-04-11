@@ -11,6 +11,7 @@
 
 const _           = require('underscore');
 const nconf       = require('nconf');
+const iwconfig    = require('wireless-tools/iwconfig');
 const command     = require('../lib/command');
 const Logger      = require('../lib/logger');
 const colorfilter = require('../lib/colorfilter');
@@ -22,14 +23,25 @@ module.exports = {
   start(){
     this.networkOptions = _.extend(nconf.get('wifi:network') , nconf.get('wifi:default'));
 
-    // To know if a wifi is connected, the command is "nmcli n"
+    return new Promise(( resolve, reject ) => {
 
+      iwconfig.status( status => {
+        console.log(status);
+        if(_.find(status, function(network){ return network.interface === this.networkOptions.ssid; })){
+          return resolve();
+        }
+        return this.createHotspot(resolve, reject);
+      } );
+    });
+  },
+
+  createHotspot : function(resolve, reject){
 
     let commandString = `sudo nmcli dev wifi hotspot `               +
-                        `ifname '${this.networkOptions.interface}' ` +
-                        `con-name '${this.networkOptions.ssid}' `    +
-                        `ssid '${this.networkOptions.ssid}' `        +
-                        `password '${this.networkOptions.passphrase}'`;
+      `ifname '${this.networkOptions.interface}' ` +
+      `con-name '${this.networkOptions.ssid}' `    +
+      `ssid '${this.networkOptions.ssid}' `        +
+      `password '${this.networkOptions.passphrase}'`;
 
     console.log(commandString)
 
@@ -44,15 +56,13 @@ module.exports = {
     });
 
 
-    return new Promise(( resolve, reject ) => {
-      startHotspot.on('close', code =>{
-        if(code != 0){
-          console.log("[HOTSPOT]: Error: ", code);
-          return reject();
-        }
-        console.log("[HOTSPOT]: Enabled");
-        return resolve();
-      });
-    })
+    return startHotspot.on('close', code =>{
+      if(code != 0){
+        console.log("[HOTSPOT]: Error: ", code);
+        return reject();
+      }
+      console.log("[HOTSPOT]: Enabled");
+      return resolve();
+    });
   }
 };

@@ -4,14 +4,17 @@
 require('nconf').argv().env().file({ file: 'config/config.json' });
 
 // Start hotspot
-require('./services/hotspot').start().then(() => {
-  // Start database
-  //require('./services/database').start();
+require('./services/dhcp').start().then( () => {
+  require('./services/hotspot').start().then(() => {
 
-  //Start server
-  require('./services/server').start();
+    // Start database
+    //require('./services/database').start();
 
-  //Load routes
-  require('./routes');
+    //Start server
+    require('./services/server').start();
+
+    //Load routes
+    require('./routes');
+  });
 });
 

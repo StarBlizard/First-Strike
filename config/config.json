@@ -1,11 +1,23 @@
 {
   "PORT" 	  : 80,
   "wifi"    : {
-    "network" : {
+    "default" : {
       "interface" : "wlp2s0b1"
+    },
+    "network" : {
+      "interface" : "wlp2s0b1",
       "ssid"      : "First Strike",
       "passphrase": "5tr1g0nT34m",
       "driver"    : "nl80211"
+    },
+    "dhcp"    : {
+      "start"     : "10.42.0.100",
+      "end"       : "10.42.0.200",
+      "option"    : {
+        "router" : "10.42.0.1",
+        "subnet" : "255.255.255.0",
+        "dns"    : [ "10.42.0.1", "8.8.8.8" ]
+      }
     }
   }
 }
