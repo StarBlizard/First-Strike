@@ -1,5 +1,5 @@
 {
-  "PORT" 	  : 80,
+  "PORT" 	  : 8080,
   "wifi"    : {
     "default" : {
       "interface" : "wlp2s0b1"

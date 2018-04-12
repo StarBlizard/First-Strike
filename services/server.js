@@ -1,21 +1,36 @@
 'use strict';
 
-const nconf 	     = require('nconf');
-const Server 	     = require('http').Server;
-const cookieParser = require('cookie-parser');
-const express 	   = require('express');
+const nconf 	      = require('nconf');
+const Server 	      = require('http').Server;
+const cookieParser  = require('cookie-parser');
+const express 	    = require('express');
+const child_process = require('child_process');
 //const session 	   = require('express-session');
-const bodyParser   = require('body-parser');
-const path         = require('path');
+const bodyParser    = require('body-parser');
+const path          = require('path');
 //const passport 	   = require('./passport.js').passport;
-const Logger       = require('../lib/logger.js');
+const Logger        = require('../lib/logger.js');
+const command       = require('../lib/command');
 
 module.exports = {
 
 	start(){
 
-		var PORT    = process.env.NODE_PORT || nconf.get('PORT');
+		this.PORT = nconf.get('PORT') || process.env.NODE_PORT;
 
+    console.log(this.PORT)
+
+    let commandString = `sudo lsof -i :${this.PORT} -t`;
+
+    Logger.info(`Running: ${commandString}`);
+
+    let searchPID = command(commandString, {shell : true});
+
+    console.log(pid);
+    if(pid){ process.kill(pid); }
+	},
+
+  setUp : function(){
 		this.server = new Server();
 		this.app    = express(this.server);
 
@@ -41,9 +56,8 @@ module.exports = {
 		});
 
 		// To indicate the port to listen
-		this.app.listen(PORT, function(){
-			Logger.info('[Server] Start server at 10.42.0.1:', PORT);
+		this.app.listen(this.PORT, function(){
+			Logger.info('[Server] Start server at 10.42.0.1:', this.PORT);
 		});
-	}
-
+  }
 };
