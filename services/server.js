@@ -18,19 +18,6 @@ module.exports = {
 
 		this.PORT = nconf.get('PORT') || process.env.NODE_PORT;
 
-    console.log(this.PORT)
-
-    let commandString = `sudo lsof -i :${this.PORT} -t`;
-
-    Logger.info(`Running: ${commandString}`);
-
-    let searchPID = command(commandString, {shell : true});
-
-    console.log(pid);
-    if(pid){ process.kill(pid); }
-	},
-
-  setUp : function(){
 		this.server = new Server();
 		this.app    = express(this.server);
 
