@@ -43,6 +43,7 @@ module.exports = {
 		});
 
 		// To indicate the port to listen
+    console.log(this.PORT)
 		this.app.listen(this.PORT, function(){
 			Logger.info('[Server] Start server at 10.42.0.1:', this.PORT);
 		});

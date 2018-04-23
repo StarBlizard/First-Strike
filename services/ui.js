@@ -2,8 +2,9 @@
 
 const {app, BrowserWindow} = require('electron');
 
-const path = require('path')
-const url = require('url')
+const path  = require('path')
+const nconf = require('nconf')
+const url   = require('url')
 
 module.exports = {
 
@@ -14,14 +15,12 @@ module.exports = {
   },
 
   createWindow(){
+		let PORT = nconf.get('PORT') || process.env.NODE_PORT;
+
     // Create the browser window.
     let win = new BrowserWindow({width: 800, height: 600})
 
     // and load the index.html of the app.
-    win.loadURL(url.format({
-      pathname: path.join(__dirname, '../ui/index.html'),
-      protocol: 'file:',
-      slashes : true
-    }))
+    win.loadURL(`http://localhost:${PORT}`);
   }
 };

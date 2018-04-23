@@ -1,15 +1,19 @@
 'use strict';
 
-const nconf           = require('nconf');
+const nconf = require('nconf');
+
+let app     = require('services/server').app;
 
 // Controllers
-let app               = require('./services/server').app;
-let viewController    = require("./controllers/viewController");
-let pepeController    = require("./controllers/pepeController");
-let papaController    = require("./controllers/papaController");
+let view    = require("controllers/view");
+let actions = require("controllers/action");
+
+// Middleware
+let started = require("middleware/started");
 
 // Views
 app.get('/', viewController.index);
 
-app.get('/pepe', pepeController);
-app.post('/papa', papaController);
+// Actions
+app.post('/shot', started, actions.shot);
+app.post('/hit' , started, actions.hit);

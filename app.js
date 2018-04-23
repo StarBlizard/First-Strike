@@ -1,9 +1,9 @@
 'use strict';
 
 // Start configuration service
-//require('nconf').argv().env().file({ file: 'config/config.json' });
+require('nconf').argv().env().file({ file: 'config/config.json' });
 
-require('./services/wifi').start();
+//require('./services/wifi').start();
 
 /*
 // Start hotspot
@@ -12,14 +12,15 @@ require('./services/dhcp').start().then( () => {
 
     // Start database
     //require('./services/database').start();
+    //
+*/
 
-   */
     //Start server
-//    require('./services/server').start();
+    require('./services/server').start();
     //Start UI
-//    require('./services/ui').start();
-    /*
+    require('./services/ui').start();
 
+   /*
     //Load routes
     require('./routes');
   });
