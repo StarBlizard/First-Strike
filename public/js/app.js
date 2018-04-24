@@ -8,9 +8,7 @@ require.config({
     jquery     : "jquery",
     underscore : "underscore",
     Backbone   : "backbone",
-    models     : "/js/app/models",
-    views      : "/js/app/views",
-    collections: "/js/app/collections"
+    static     : "/js/app"
   }
 });
 
@@ -24,4 +22,4 @@ require(["./js/router.js", "jquery", "Backbone", "css!/css/bootstrap"],
     };
 
     $(App.Initialize);
-});     
+});

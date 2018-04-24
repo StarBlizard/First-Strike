@@ -20,9 +20,9 @@ require('./services/dhcp').start().then( () => {
     //Start UI
     require('./services/ui').start();
 
-   /*
     //Load routes
     require('./routes');
+   /*
   });
 });
 */

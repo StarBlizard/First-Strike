@@ -2,18 +2,23 @@
 
 const nconf = require('nconf');
 
-let app     = require('services/server').app;
+let app     = require('./services/server').app;
 
 // Controllers
-let view    = require("controllers/view");
-let actions = require("controllers/action");
+let view    = require("./controllers/view");
+let actions = require("./controllers/actions");
+let game    = require("./controllers/game");
 
 // Middleware
-let started = require("middleware/started");
+let started = require("./middlewares/started");
 
 // Views
-app.get('/', viewController.index);
+app.get('/', view.index);
 
 // Actions
-app.post('/shot', started, actions.shot);
-app.post('/hit' , started, actions.hit);
+app.post('/connect', actions.connect);
+app.post('/shot'   , started, actions.shot);
+app.post('/hit'    , started, actions.hit);
+
+app.post('/start', game.start);
+app.post('/stop' , game.stop);

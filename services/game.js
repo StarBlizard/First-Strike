@@ -1,5 +1,6 @@
 'use strict';
 
+const Logger = require('../lib/logger.js');
 let players = require('../lib/players');
 
 module.exports = {
@@ -9,12 +10,18 @@ module.exports = {
   start(time){
     if(this.started){ return; }
 
-    console.log("[INFO] Game started")
+    Logger.info("Game started")
     this.started = true;
 
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.started = false;
-      console.log("[INFO] Game ended")
+      Logger.info("Game ended")
     }, time);
+  },
+
+  stop(){
+    clearTimeout(this.timeout);
+    this.started = false;
+    Logger.info("Game ended")
   }
 };

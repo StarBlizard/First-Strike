@@ -9,7 +9,7 @@
     "cookie-parse": "0.4.x",
     "cookie-parser": "1.4.x",
     "crypto": "1.0.x",
-    "electron": "^1.8.4",
+    "electron": "^2.0.0-beta.6",
     "express": "4.16.x",
     "express-session": "1.15.x",
     "knex": "0.13.x",

@@ -15,6 +15,8 @@ module.exports = {
       alive : true,
       score : 0
     };
+
+    console.log("[NEW PLAYER]: ", player);
   },
 
 	hit(req, res){
