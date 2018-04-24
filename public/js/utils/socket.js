@@ -1,6 +1,7 @@
 define( require => {
-//  const io = require("socketio")
-//  return io();
+  const io = require("socketio");
+
+  return io('http://10.42.0.1:8080');
 
   /*
   Creator.socket.on('print:STEP', Creator.Methods.updateStep);

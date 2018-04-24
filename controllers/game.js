@@ -14,5 +14,9 @@ module.exports = {
 	stop(req, res){
     game.stop();
     return res.status(200).send(true);
+  },
+
+  players(req, res){
+    return res.status(200).send(Object.keys(players));
   }
 };

@@ -57,6 +57,9 @@ module.exports = {
 
   createHotspot : function(resolve, reject){
 
+    // Issue saving if name
+    this.networkOptions.interface = "wlp2s0b1";
+
     let commandString = `sudo nmcli dev wifi hotspot `               +
                         `ifname '${this.networkOptions.interface}' ` +
                         `con-name '${this.networkOptions.ssid}' `    +

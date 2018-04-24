@@ -1,8 +1,9 @@
 'use strict';
 
 let players = require('../lib/players');
-let getHex  = require('../lib/getHex');
-let game    = require('../services/game');
+let getHex = require('../lib/getHex');
+let game   = require('../services/game');
+let { io } = require('../services/ws');
 
 module.exports = {
 
@@ -18,6 +19,8 @@ module.exports = {
     };
 
     console.log("[NEW PLAYER]: ", player);
+    io.emit('player:CONNECT', { id : player });
+    io.send('player:CONNECT', { id : player });
     return res.status(200).send({player});
   },
 

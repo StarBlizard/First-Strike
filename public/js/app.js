@@ -8,7 +8,7 @@ require.config({
     jquery     : "jquery",
     underscore : "underscore",
     Backbone   : "backbone",
-//    socketio   : "socket.io",
+    socketio   : "socket.io",
     utils      : "/js/utils",
     static     : "/js/app"
   }
