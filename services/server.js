@@ -18,6 +18,10 @@ module.exports = {
 
 		this.PORT = nconf.get('PORT') || process.env.NODE_PORT;
 
+
+//    this.app  = express();
+//		this.http = Server(this.app);
+
 		this.server = new Server();
 		this.app    = express(this.server);
 
@@ -31,6 +35,12 @@ module.exports = {
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended : true }));
 
+    this.app.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+
 		// Session middlewares
 //		this.app.use(session({ secret : 'secret', resave: true, saveUninitialized: true }));
 //		this.app.use(passport.initialize());
@@ -38,7 +48,7 @@ module.exports = {
 
 		// To log clients connections
 		this.app.use(function(req, res, next){
-			Logger.info('Incoming request: ', req.url, req.connection.remoteAddress);
+//			Logger.info('Incoming request: ', req.url, req.connection.remoteAddress);
 			return next();
 		});
 
