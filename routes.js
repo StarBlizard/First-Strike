@@ -16,9 +16,10 @@ let started = require("./middlewares/started");
 app.get('/', view.index);
 
 // Actions
-app.post('/connect', actions.connect);
-app.post('/shot'   , started, actions.shot);
-app.post('/hit'    , started, actions.hit);
+app.post('/connect'   , actions.connect);
+app.post('/disconnect', actions.disconnect);
+app.post('/shot'      , started, actions.shot);
+app.post('/hit'       , started, actions.hit);
 
 app.post('/start', game.start);
 app.post('/stop' , game.stop);

@@ -1,15 +1,16 @@
 'use strict';
 
 let players = require('../lib/players');
+let getHex  = require('../lib/getHex');
 let game    = require('../services/game');
 
 module.exports = {
 
   connect(req, res){
-    if(!game.started){ return; }
+    if(game.started){ return res.status(401).send(false); }
 
     // player should be player's hexadecimal code
-    let player = req.body
+    let player = getHex();
 
     players[player] = {
       alive : true,
@@ -17,6 +18,19 @@ module.exports = {
     };
 
     console.log("[NEW PLAYER]: ", player);
+    return res.status(200).send({player});
+  },
+
+  disconnect(req, res){
+    if(game.started){ return res.status(401).send(false); }
+
+    // player should be player's hexadecimal code
+    let {player} = req.body;
+
+    delete players[player];
+
+    console.log("[KICKED PLAYER]: ", player);
+    return res.status(200).send(true);
   },
 
 	hit(req, res){
@@ -35,6 +49,7 @@ module.exports = {
 
     players[hitted].alive = false;
     players[shooter].score++;
+    return res.status(200).send(true);
 	},
 
   shot(req, res){
@@ -43,12 +58,14 @@ module.exports = {
 
     console.log("[SHOT]: ", data);
 
-    if(!players[shooter].alive){ return; }
+    if(!players[shooter].alive || players[shooter].shoot){ return res.status(401).send(false); }
 
     players[shooter] = true;
 
     setTimeout(() => {
       players[shooter] = null;
-    }, 5000);
+    }, 100);
+
+    return res.status(200).send(true);
   }
 };

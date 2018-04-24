@@ -7,7 +7,7 @@ define( require => {
       let Dashboard = require("static/view");
 
       new Dashboard({
-        el : "#container"
+        el : "#dashboard"
       });
     }
   });
