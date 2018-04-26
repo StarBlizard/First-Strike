@@ -1,0 +1,109 @@
+body{
+  position         : static;
+  background: #141e30; /* fallback for old browsers */
+}
+
+#container{
+  position         : relative;
+  padding-top      : 5%;
+  width            : auto;
+  height           : auto;
+  padding-left     : 10%;
+  padding-right    : 10%;
+  background       : #141e30; /* fallback for old browsers */
+  /*background-color : #ff6600;*/
+  /*background       : linear-gradient(to top, white 0%, #ff6600 100%);*/
+}
+
+.contain{
+  padding-top      : 5%;
+  padding-left     : 17.5%;
+  padding-right    : 11%;
+}
+
+.control{
+  display : inline-block;
+}
+
+.row{
+  color : white;
+}
+
+.hide{
+  display : none;
+}
+
+section{
+  margin : 5px;
+}
+
+.options{
+  float : left;
+}
+
+#create{
+  /*float : right;*/
+  margin-top: 9%;
+}
+
+#progress{
+  display : none;
+}
+
+#bash{
+  position         : relative;
+  margin-top       : 3.7%;
+  margin-left      : 1.75%;
+  line-height      : 150%;
+  color            : white;
+  background-color : black;
+  overflow         : auto;
+  padding          : 2.5%;
+  border-width     : 1%;
+  border-color     : white;
+  border-style     : solid;
+  border-radius    : 15px;
+  width            : 61.25%;
+  height           : 17em;
+  /*margin-left      : 18.45%;*/
+  /*margin-right     : 18.45%;*/
+}
+
+.step{
+  color :green;
+}
+
+.error{
+  color : red;
+}
+
+#shade{
+  top              : 0%;
+  position         : fixed;
+  width            : 100%;
+  height           : 100%;
+  background-color : black;
+  opacity          : 0.75;
+}
+
+#light{
+  top              : 0%;
+  position         : fixed;
+  background-color : white;
+  height           : 50%;
+  width            : 50%;
+  border-radius    : 15px;
+  margin-left      : 25%;
+  margin-top       : 12.5%;
+}
+
+.modal{
+  top    : 25%;
+  height : auto;
+}
+
+.modal-body{
+  display : block;
+  width   : auto;
+  margin  : auto;
+}

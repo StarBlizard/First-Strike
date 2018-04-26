@@ -4,14 +4,12 @@ define( require => {
   const PlayerView = require("./player/view");
   const template   = require("text!./template.html");
   const ajax       = require("utils/ajax");
-//  const io       = require("utils/socket");
+  const io       = require("utils/socket");
 
   return Backbone.View.extend({
 
-    // USE COLLECTION!!!
-
     events : {
-      "click [js-connect]" : "connect"
+      "click [js-connect]" : "TESTconnect"
     },
 
     initialize : function(){
@@ -24,16 +22,18 @@ define( require => {
       this.$el.html(template);
       this.$tbody  = this.$el.find("tbody");
       this.$player = this.$el.find("[js-game-player]");
+
+      io.on("player:CONNECT", this.connect.bind(this));
     },
 
-    connect : function(){
-      let player = this.$player.val();
+    connect : function(data){
+      this.collection.add({id : data.id});
+      this.events["click [js-disconnect]"] = "disconnect";
+      this.delegateEvents();
+    },
 
-      ajax('/connect').then( (data) =>{
-        this.collection.add({id : data.player});
-        this.events["click [js-disconnect]"] = "disconnect";
-        this.delegateEvents();
-      });
+    TESTconnect : function(){
+      ajax('/connect');
     },
 
     disconnect : function(event){

@@ -20,7 +20,6 @@ module.exports = {
 
     console.log("[NEW PLAYER]: ", player);
     io.emit('player:CONNECT', { id : player });
-    io.send('player:CONNECT', { id : player });
     return res.status(200).send({player});
   },
 

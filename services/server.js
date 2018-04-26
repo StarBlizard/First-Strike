@@ -19,11 +19,11 @@ module.exports = {
 		this.PORT = nconf.get('PORT') || process.env.NODE_PORT;
 
 
-//    this.app  = express();
-//		this.http = Server(this.app);
+    this.app  = express();
+		this.http = Server(this.app);
 
-		this.server = new Server();
-		this.app    = express(this.server);
+//		this.server = new Server();
+//		this.app    = express(this.server);
 
 		// Stablishing public folder
 		this.app.use(express.static(path.join(__dirname, '../public/')));
@@ -53,8 +53,7 @@ module.exports = {
 		});
 
 		// To indicate the port to listen
-    console.log(this.PORT)
-		this.app.listen(this.PORT, function(){
+		this.http.listen(this.PORT, function(){
 			Logger.info('[Server] Start server at 10.42.0.1:', this.PORT);
 		});
   }

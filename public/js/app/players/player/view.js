@@ -5,15 +5,17 @@ define( require => {
 
   return Backbone.View.extend({
 
+    tagName : "tr",
+
     initialize(options){
-      this.model    = options.model;
+      this.data     = options.model.toJSON();
       this.template = _.template(template);
+      this.el.id    = this.data.id;
       this.render();
     },
 
     render(){
-      let data = this.model.toJSON();
-      this.$el.html(this.template(data));
+      this.$el.html(this.template(this.data));
     }
 
   });

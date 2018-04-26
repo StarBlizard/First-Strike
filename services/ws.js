@@ -1,11 +1,18 @@
+const socketio = require("socket.io");
+
 let server = require('./server');
 let router = require('../events/router');
 
 module.exports = {
   start(){
-    this.io = require('socket.io')(server.http);
+    /*
+    this.io = new socketio();
+    this.io.attach(server.server);
 
-    this.io.origins((origin, callback) => { callback(null, true); });
+    this.io.on('connection', router);
+    */
+
+    this.io = require('socket.io')(server.http);
     this.io.on('connection', router);
   }
 };

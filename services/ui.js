@@ -9,7 +9,9 @@ const url   = require('url')
 module.exports = {
 
   start(){
-    this.createWindow();
+    //this.createWindow();
+    app.on('ready', this.createWindow);
+
     return app;
   },
 
@@ -25,7 +27,6 @@ module.exports = {
 
       }
     });
-    console.log("pepe")
 
     mainWindow.loadURL(`http://localhost:${PORT}`);
     mainWindow.webContents.openDevTools();
