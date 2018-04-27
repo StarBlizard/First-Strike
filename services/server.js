@@ -2,8 +2,8 @@
 
 const nconf 	      = require('nconf');
 const Server 	      = require('http').Server;
-const cookieParser  = require('cookie-parser');
 const express 	    = require('express');
+const cookieParser  = require('cookie-parser');
 const child_process = require('child_process');
 //const session 	   = require('express-session');
 const bodyParser    = require('body-parser');
@@ -40,11 +40,6 @@ module.exports = {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
-
-		// Session middlewares
-//		this.app.use(session({ secret : 'secret', resave: true, saveUninitialized: true }));
-//		this.app.use(passport.initialize());
-//    this.app.use(passport.session());
 
 		// To log clients connections
 		this.app.use(function(req, res, next){

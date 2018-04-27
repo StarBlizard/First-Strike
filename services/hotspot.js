@@ -19,13 +19,11 @@ const colorfilter = require('../lib/colorfilter');
 
 module.exports = {
 
-  // Maybe install hostapd???
-  // TODO: get driver data, detect if a wifi is connected, and kill it if it is
   start(){
     this.networkOptions = _.extend(nconf.get('wifi:network') , nconf.get('wifi:default'));
 
     // To clean created connections when node exits
-    //process.on('SIGINT', this.exitHandler.bind(this));
+    process.on('SIGINT', this.exitHandler.bind(this));
     process.on('exit'  , this.exitHandler.bind(this));
 
     return new Promise(( resolve, reject ) => {
@@ -56,10 +54,6 @@ module.exports = {
   },
 
   createHotspot : function(resolve, reject){
-
-    // Issue saving if name
-    this.networkOptions.interface = "wlp2s0b1";
-
     let commandString = `sudo nmcli dev wifi hotspot `               +
                         `ifname '${this.networkOptions.interface}' ` +
                         `con-name '${this.networkOptions.ssid}' `    +
