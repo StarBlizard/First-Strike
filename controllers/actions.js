@@ -8,7 +8,8 @@ let { io } = require('../services/ws');
 module.exports = {
 
   connect(req, res){
-    console.log("SEEEE CONECTOOO ERIIIIICKKKKKK")
+    console.log("SEEEE CONECTOOO POR POST ERIIIIICKKKKKK")
+    console.log("Informacion que enviaste: ", req.body);
     if(game.started){ return res.status(401).send(false); }
 
     // player should be player's hexadecimal code
@@ -22,6 +23,12 @@ module.exports = {
     console.log("[NEW PLAYER]: ", player);
     io.emit('player:CONNECT', { id : player });
     return res.status(200).send({player});
+  },
+
+  connect(req, res){
+    console.log("SEEEE CONECTOOO POR GET ERIIIIICKKKKKK")
+    console.log("Informacion que enviaste: ", req.query);
+    return res.status(200).send(true);
   },
 
   disconnect(req, res){

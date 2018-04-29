@@ -17,6 +17,7 @@ app.get('/', view.index);
 
 // Actions
 app.post('/connect'   , actions.connect);
+app.get('/getConnect'   , actions.getConnect);
 app.post('/disconnect', actions.disconnect);
 app.post('/shot'      , started, actions.shot);
 app.post('/hit'       , started, actions.hit);
