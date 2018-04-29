@@ -8,6 +8,7 @@ let { io } = require('../services/ws');
 module.exports = {
 
   connect(req, res){
+    console.log("SEEEE CONECTOOO ERIIIIICKKKKKK")
     if(game.started){ return res.status(401).send(false); }
 
     // player should be player's hexadecimal code
