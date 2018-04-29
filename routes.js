@@ -23,4 +23,4 @@ app.post('/hit'       , started, actions.hit);
 
 app.post('/start' , game.start);
 app.post('/stop'  , game.stop);
-app.post('/players', game.players);
+app.get('/players', game.players);

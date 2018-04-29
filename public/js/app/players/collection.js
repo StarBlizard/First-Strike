@@ -8,14 +8,15 @@ define( require => {
     url : '/players',
 
     initialize : function(){
-
+/*
       ajax("/players").then( (data) => {
         let players = _.map(data, player => {
           return { id : player };
         });
         this.add(players);
       } );
-//      this.fetch();
+      */
+      this.fetch();
     },
  });
 });

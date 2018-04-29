@@ -48,7 +48,7 @@ define( require => {
     addPlayer(model){
       if(_.isEmpty(model.toJSON()) || !model.get("id")){ return; }
       let player = new PlayerView({ model });
-      this.$el.append(player.el);
+      this.$tbody.append(player.el);
     }
   });
 });

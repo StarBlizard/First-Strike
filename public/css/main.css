@@ -1,6 +1,23 @@
 body{
   position         : static;
   background: #141e30; /* fallback for old browsers */
+  color: white; /* fallback for old browsers */
+}
+
+.live-dot{
+  height: 25px;
+  width: 25px;
+  background-color: #00b300;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dead-dot{
+  height: 25px;
+  width: 25px;
+  background-color: #cc0000;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 #container{

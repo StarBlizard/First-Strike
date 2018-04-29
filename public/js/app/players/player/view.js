@@ -9,13 +9,18 @@ define( require => {
 
     initialize(options){
       this.data     = options.model.toJSON();
+      console.log(this.data)
       this.template = _.template(template);
       this.el.id    = this.data.id;
       this.render();
     },
 
     render(){
-      this.$el.html(this.template(this.data));
+      try{
+        this.$el.html(this.template(this.data));
+      }catch(e){
+        console.error(e);
+      }
     }
 
   });

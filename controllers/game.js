@@ -17,6 +17,15 @@ module.exports = {
   },
 
   players(req, res){
-    return res.status(200).send(Object.keys(players));
+    const _ = require('underscore');
+    let collection = _.reduce(players, (arr, player, index) => {
+      player.id = index;
+      arr.push(player);
+      return arr;
+    }, []);
+
+    console.log(collection);
+
+    return res.status(200).send(collection);
   }
 };
