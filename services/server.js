@@ -42,10 +42,13 @@ module.exports = {
     });
 
 		// To log clients connections
+    /*
 		this.app.use(function(req, res, next){
-//			Logger.info('Incoming request: ', req.url, req.connection.remoteAddress);
+      let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+			console.log('Incoming request: ', req.url, ip);
 			return next();
 		});
+    */
 
 		// To indicate the port to listen
 		this.http.listen(this.PORT, function(){

@@ -17,15 +17,17 @@ module.exports = {
   },
 
   players(req, res){
-    const _ = require('underscore');
-    let collection = _.reduce(players, (arr, player, index) => {
-      player.id = index;
-      arr.push(player);
-      return arr;
-    }, []);
-
-    console.log(collection);
+    let collection = players.getCollection();
 
     return res.status(200).send(collection);
+  },
+
+  state(req, res){
+    let data = {
+      time    : game.time,
+      started : game.started
+    };
+
+    return res.status(200).send(data);
   }
 };

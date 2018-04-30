@@ -1,44 +1,47 @@
 'use strict';
 
+const _      = require('underscore');
+const { io } = require('../services/ws');
+
 let players = require('../lib/players');
 let getHex = require('../lib/getHex');
 let game   = require('../services/game');
-let { io } = require('../services/ws');
 
 module.exports = {
 
   connect(req, res){
-    console.log("SEEEE CONECTOOO POR POST ERIIIIICKKKKKK")
-    console.log("Informacion que enviaste: ", req.body);
+    // TODO: RECONNECT SERVICE
     if(game.started){ return res.status(401).send(false); }
 
-    // player should be player's hexadecimal code
-    let player = getHex();
+    let ip         = req.header('x-forwarded-for') || req.connection.remoteAddress;
+    let collection = players.getCollection();
 
-    players[player] = {
+    let logged = collection.reduce( (logged, player) => {
+      return (player.ip == ip) ? true : false;
+    }, false);
+
+    //if(logged){ return res.status(401).send(false); }
+
+    let id = getHex();
+
+    players[id] = {
       alive : true,
-      score : 0
+      score : 0,
+      ip    : ip
     };
 
-    console.log("[NEW PLAYER]: ", player);
-    io.emit('player:CONNECT', { id : player });
-    return res.status(200).send({player});
-  },
-
-  connect(req, res){
-    console.log("SEEEE CONECTOOO POR GET ERIIIIICKKKKKK")
-    console.log("Informacion que enviaste: ", req.query);
-    return res.status(200).send(true);
+    io.emit('player:CONNECT', { id : id });
+    return res.status(200).send({id});
   },
 
   disconnect(req, res){
-    if(game.started){ return res.status(401).send(false); }
+    // TODO: BAN KICKED PLAYERS
 
-    // player should be player's hexadecimal code
     let {player} = req.body;
 
     delete players[player];
 
+    io.emit('player:KICK', { id : player });
     console.log("[KICKED PLAYER]: ", player);
     return res.status(200).send(true);
   },
@@ -53,28 +56,47 @@ module.exports = {
 
     let { shooter, hitted } = req.body;
 
-    console.log(`[HIT] ${hitted} by [SHOOTER] ${shooter}`);
-
-    if(!players[shooter].shoot || !players[shooter].alive || !players[hitted].alive){ return; }
+    if(!players[shooter].shoot ||
+       !players[shooter].alive ||
+       !players[hitted].alive  ||
+       hitted === shooter       )
+      { return res.status(401).send(true); }
 
     players[hitted].alive = false;
     players[shooter].score++;
+
+    // Patching bug where the id disapears
+    (players[shooter].id) || (players[shooter].id = shooter);
+    (players[hitted].id)  || (players[hitted].id  = hitted);
+
+    io.emit('player:HIT', { hitted : players[hitted], shooter : players[shooter] });
+
+    if(players.state().alive == 1){
+      game.stop();
+      players.reset();
+    }
+
     return res.status(200).send(true);
 	},
 
   shot(req, res){
-    // shooter should be equal to shooter's hexadecimal code
-    let shooter = req.body;
+    let shooter = req.body.player;
 
-    console.log("[SHOT]: ", data);
+    console.log("[SHOT]: ", shooter);
 
     if(!players[shooter].alive || players[shooter].shoot){ return res.status(401).send(false); }
 
-    players[shooter] = true;
+    players[shooter].shoot = true;
+
+    /*
+    setTimeout(() => {
+      players[shooter].shoot = null;
+    }, 100);
+    */
 
     setTimeout(() => {
-      players[shooter] = null;
-    }, 100);
+      players[shooter].shoot = null;
+    }, 5000);
 
     return res.status(200).send(true);
   }

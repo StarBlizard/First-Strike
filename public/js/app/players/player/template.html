@@ -1,4 +1,8 @@
 <td><%= id %></td>
-<td><label id="<%= id %>-score">0</label></td>
-<td><span class="dead-dot"></span></td>
-<td><input type='button' value="kick" js-disconnect='<%= id %>'></td>
+<td><label js-score='<%= score %>'><%= score %></label></td>
+<td><span class="<%= state %>-dot"></span></td>
+<td>
+  <input type='button' value="kick" js-disconnect='<%= id %>'>
+  <input type='button' value="hit"  js-hit='<%= id %>'>
+  <input type='button' value="shot" js-shot='<%= id %>'>
+</td>

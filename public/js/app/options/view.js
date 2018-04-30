@@ -2,53 +2,62 @@ define( require => {
 
   const Backbone = require("Backbone");
   const ajax     = require("utils/ajax");
+  const io       = require("utils/socket");
   const template = require("text!./template.html");
 
   return Backbone.View.extend({
 
     events : {
-      "click [js-startgame]" : "startGame"
+      "click [js-startgame]" : "startGame",
+      "click [js-stopgame]"  : "stopGame"
     },
 
     initialize : function(){
-      this.$el.html(template);
-      this.$gameTimer = this.$el.find("[js-game-timer]");
-      this.interval;
+      ajax('/state').then( data => {
+        this.$el.html(template);
+        this.$gameTimer = this.$el.find("[js-game-timer]");
+
+        if(data.started){
+          this.time = data.time;
+          this.drawClock();
+        }
+
+        io.on("game:SECOND", this.updateClock.bind(this));
+        io.on("game:ENDED" , this.reset.bind(this));
+        io.on('game:START' , this.drawClock.bind(this));
+      });
     },
 
     startGame : function(){
-      let timer   = this.$gameTimer.val();
+      this.time = this.$gameTimer.val();
       let counter = 0;
 
       this.$el.find("#valid").remove();
-      if(!timer*1 || timer*1 ==0){ return this.$el.append("<label id='valid'>Ingrese una cantidad valida</label>") }
+      if(!this.time*1 || this.time*1 ==0){ return this.$el.append("<label id='valid'>Ingrese una cantidad valida</label>") }
 
-      ajax('/start', {timer : timer*1000}).then( () => {
-        console.log("[INFO] Game started")
+      ajax('/start', {timer : this.time*1000}).then(this.drawClock.bind(this));
+    },
 
-        this.$el.html(`<div id='counter'>Tiempo Restante: ${timer}</div>`);
-        this.$el.append(`<div><input type='button' value='Stop' js-stopgame></div>`);
-        timer--;
+    drawClock : function(){
+      this.$el.html(`<div id='counter'>Tiempo Restante: ${this.time}</div>`);
+      this.$el.append(`<div><input type='button' value='Stop' js-stopgame></div>`);
 
-        this.events["click [js-stopgame]"] = "stopGame";
-        this.delegateEvents();
-
-        this.interval = setInterval(() => {
-          this.$el.find("#counter").html(`Tiempo Restante: ${timer}`);
-          if(!timer){ console.log("stop"); return this.stopGame() }
-          timer--;
-        }, 1000);
-      })
+      this.delegateEvents();
     },
 
     stopGame: function(){
-      ajax('/stop').then( () => {
-        console.log("[INFO] Game ended")
-        clearInterval(this.interval);
-        this.interval = undefined;
-        this.$el.html(template);
-        this.$gameTimer = this.$el.find("[js-game-timer]");
-      });
+      ajax('/stop').then(this.reset.bind(this));
+    },
+
+    reset : function(){
+      console.log("[INFO] Game ended")
+      this.$el.html(template);
+      this.$gameTimer = this.$el.find("[js-game-timer]");
+    },
+
+    updateClock: function(data){
+      this.$el.find("#counter").html(`Tiempo Restante: ${data.time}`);
+      if(!data.time){ return this.reset() }
     }
   });
 });

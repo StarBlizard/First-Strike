@@ -7,15 +7,25 @@ define( require => {
 
     tagName : "tr",
 
-    initialize(options){
-      this.data     = options.model.toJSON();
-      console.log(this.data)
+    states : {
+      true  : "live",
+      false : "dead"
+    },
+
+    initialize : function(options){
+      this.model    = options.model;
       this.template = _.template(template);
-      this.el.id    = this.data.id;
       this.render();
     },
 
-    render(){
+    render : function(data){
+      this.data = data || this.model.toJSON();
+
+      (this.data.score) || (this.data.score = 0);
+
+      this.data.alive = (_.isUndefined(this.data.alive) || this.data.alive) ? true : false;
+      this.data.state = this.states[this.data.alive];
+
       try{
         this.$el.html(this.template(this.data));
       }catch(e){
