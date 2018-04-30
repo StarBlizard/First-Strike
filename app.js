@@ -10,7 +10,7 @@ require('./services/dhcp').start().then( () => {
   require('./services/hotspot').start().then(() => {
 
     // Start database
-    require('./services/database').start();
+//    require('./services/database').start();
 
     //Start server
     require('./services/server').start();
