@@ -6,11 +6,13 @@ let players = require('../lib/players');
 
 module.exports = {
 
-  started : false,
-  time    : 0,
+  started     : false,
+  time        : 0,
+  haveStarted : false,
 
   start(time){
     if(this.started){ return; }
+    players.toRevive();
 
     io.emit('game:START', { time : this.time });
 
@@ -33,10 +35,10 @@ module.exports = {
   },
 
   stop(){
-    players.reset();
     clearInterval(this.interval);
     clearTimeout(this.timeout);
-    io.emit('game:ENDED');
+    this.haveStarted = true;
+    io.emit('game:ENDED', players.end());
     this.started = false;
     Logger.info("Game ended")
   }

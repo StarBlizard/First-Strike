@@ -14,6 +14,7 @@ define( require => {
 
     initialize : function(options){
       this.model    = options.model;
+      this.el.id    = this.model.get('id');
       this.template = _.template(template);
       this.render();
     },
@@ -21,6 +22,7 @@ define( require => {
     render : function(data){
       this.data = data || this.model.toJSON();
 
+      (this.data.kills) || (this.data.kills = 0);
       (this.data.score) || (this.data.score = 0);
 
       this.data.alive = (_.isUndefined(this.data.alive) || this.data.alive) ? true : false;

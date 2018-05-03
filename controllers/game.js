@@ -1,7 +1,7 @@
 'use strict';
 
-let players = require('../lib/players');
 let game    = require('../services/game');
+let players = require('../lib/players');
 
 module.exports = {
 
@@ -13,6 +13,11 @@ module.exports = {
 
 	stop(req, res){
     game.stop();
+    return res.status(200).send(true);
+  },
+
+	reset(req, res){
+    players.reset();
     return res.status(200).send(true);
   },
 
@@ -29,5 +34,10 @@ module.exports = {
     };
 
     return res.status(200).send(data);
+  },
+
+  getScores(req, res){
+    if(!game.haveStarted){ return res.status(200).send([]); }
+    return res.status(200).send(players.scores);
   }
 };

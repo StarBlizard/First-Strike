@@ -10,7 +10,7 @@ module.exports = {
 
   start(){
     this.createWindow();
- //   app.on('ready', this.createWindow);
+//   app.on('ready', this.createWindow);
 
     return app;
   },

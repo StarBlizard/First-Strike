@@ -32,6 +32,7 @@ define( require => {
       io.on("player:HIT"    , this.hit.bind(this));
       io.on("player:KICK"   , this.erase.bind(this));
       io.on('game:START'    , this.start.bind(this));
+      io.on('game:END'      , this.start.bind(this));
     },
 
     start : function(){

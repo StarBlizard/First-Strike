@@ -12,7 +12,7 @@ define( require => {
       "click [js-stopgame]"  : "stopGame"
     },
 
-    initialize : function(){
+    initialize : function(options){
       ajax('/state').then( data => {
         this.$el.html(template);
         this.$gameTimer = this.$el.find("[js-game-timer]");
@@ -49,7 +49,8 @@ define( require => {
       ajax('/stop').then(this.reset.bind(this));
     },
 
-    reset : function(){
+    reset : function(data){
+      console.log(data);
       console.log("[INFO] Game ended")
       this.$el.html(template);
       this.$gameTimer = this.$el.find("[js-game-timer]");

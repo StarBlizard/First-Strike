@@ -1,12 +1,6 @@
 /*
  * Hotspot fo gameee
  * WEBSERVER SOCKET WILL BE 10.42.0.1
- *
- * TODO
- * 1.- Get wifi interface name
- * 2.- Delete wifi connection when app goes down
- * 3.- Be sure if an application is using the PORT 80
- *
  */
 
 'use strict';

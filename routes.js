@@ -21,7 +21,9 @@ app.post('/disconnect', actions.disconnect);
 app.post('/shot'      , started, actions.shot);
 app.post('/hit'       , started, actions.hit);
 
-app.post('/start', game.start);
-app.post('/stop' , game.stop);
-app.post('/state', game.state);
+app.post('/start'    , game.start);
+app.post('/stop'     , game.stop);
+app.post('/reset'    , game.reset);
+app.post('/state'    , game.state);
+app.post('/getScores', game.getScores);
 app.get('/players', game.players);

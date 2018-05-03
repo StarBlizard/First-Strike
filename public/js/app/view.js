@@ -7,6 +7,7 @@ define( require => {
     initialize : function(){
       const Options = require('./options/view');
       const Players = require('./players/view');
+      const Results = require('./results/view');
 
       this.options = new Options({
         el : "#options"
@@ -15,6 +16,11 @@ define( require => {
       this.players = new Players({
         el : "#players"
       });
+
+      this.results = new Results({
+        el : "#results"
+      });
+
     }
 
   });

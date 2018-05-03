@@ -26,11 +26,13 @@ module.exports = {
 
     players[id] = {
       alive : true,
+      kills : 0,
       score : 0,
-      ip    : ip
+      ip    : ip,
+      id    : id
     };
 
-    io.emit('player:CONNECT', { id : id });
+    io.emit('player:CONNECT', players[id]);
     return res.status(200).send({id});
   },
 
@@ -56,6 +58,8 @@ module.exports = {
 
     let { shooter, hitted } = req.body;
 
+    console.log(`[SHOOTER] ${shooter} -> [HIT] ${hitted}`);
+
     if(!players[shooter].shoot ||
        !players[shooter].alive ||
        !players[hitted].alive  ||
@@ -63,7 +67,7 @@ module.exports = {
       { return res.status(401).send(true); }
 
     players[hitted].alive = false;
-    players[shooter].score++;
+    players[shooter].kills++;
 
     // Patching bug where the id disapears
     (players[shooter].id) || (players[shooter].id = shooter);
@@ -95,7 +99,7 @@ module.exports = {
     */
 
     setTimeout(() => {
-      players[shooter].shoot = null;
+      delete players[shooter].shoot;
     }, 5000);
 
     return res.status(200).send(true);
