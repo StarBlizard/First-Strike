@@ -5,15 +5,29 @@
 
 body{
   font-family: "secret";
-  position         : static;
+  position: static;
   background: #141e30; /* fallback for old browsers */
   color: white; /* fallback for old browsers */
+  word-spacing: 7.5px;
 }
 
 section{
   text-align : center;
   margin     : 2.5%;
   padding    : 2.5%;
+}
+
+td{
+  text-align: center;
+}
+
+thead{
+  margin-bottom : 10px;
+}
+
+th{
+  width : 50px;
+  text-align: center;
 }
 
 #dashboard{
