@@ -2,6 +2,7 @@ define( require => {
   const Backbone = require("Backbone");
   const _        = require("underscore");
   const template = require("text!./template.html");
+  const io       = require("utils/socket");
 
   return Backbone.View.extend({
 
@@ -17,6 +18,9 @@ define( require => {
       this.el.id    = this.model.get('id');
       this.template = _.template(template);
       this.render();
+
+      io.on("player:DISCONNECT", this.inactive.bind(this));
+      io.on("player:RECONNECT", this.inactive.bind(this));
     },
 
     render : function(data){
@@ -33,7 +37,22 @@ define( require => {
       }catch(e){
         console.error(e);
       }
-    }
+    },
 
+    inactive : function(){
+      this.$el.find('[js-dot-state]')
+        .removeClass('live-dot')
+        .removeClass('dead-dot')
+        .addClass('inactive-dot');
+    },
+
+    active : function(data){
+      let alive = (_.isUndefined(data.status) || data.status) ? true : false;
+      let state = this.states[alive];
+
+      this.$el.find('[js-dot-state]')
+        .removeClass('inactive-dot')
+        .removeClass(`${state}-dot`);
+    }
   });
 });

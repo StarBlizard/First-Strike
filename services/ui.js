@@ -9,8 +9,8 @@ const url   = require('url')
 module.exports = {
 
   start(){
-    this.createWindow();
-//   app.on('ready', this.createWindow);
+//    this.createWindow();
+   app.on('ready', this.createWindow);
 
     return app;
   },

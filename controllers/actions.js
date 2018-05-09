@@ -11,29 +11,48 @@ module.exports = {
 
   connect(req, res){
     // TODO: RECONNECT SERVICE
-    if(game.started){ return res.status(401).send(false); }
-
     let ip         = req.header('x-forwarded-for') || req.connection.remoteAddress;
     let collection = players.getCollection();
 
     let logged = collection.reduce( (logged, player) => {
-      return (player.ip == ip) ? true : false;
+      return (player.ip == ip) ? player : false;
     }, false);
 
-    //if(logged){ return res.status(401).send(false); }
+
+    if(logged){ 
+      logged.active = true;
+//      io.emit('player:RECONNECT', { status : logged.alive });
+//      logged.timeout = setTimeout( () => {
+//      io.emit('player:DISCONNECT', { id : logged.id });
+//        console.log("timeout")
+//        logged.active = false;
+//      }, 5000 );
+
+      return res.status(200).send(logged.id);
+    }
+
+    if(game.started){ return res.status(401).send(false); }
 
     let id = getHex();
 
+    console.log(5)
     players[id] = {
-      alive : true,
-      kills : 0,
-      score : 0,
-      ip    : ip,
-      id    : id
+      alive  : true,
+      active : true,
+      kills  : 0,
+      score  : 0,
+      ip     : ip,
+      id     : id
     };
 
+//    players[id].timeout = setTimeout( () => {
+//      io.emit('player:DISCONNECT', { id : id });
+//      console.log("timeout")
+//      players[id].active = false;
+//    }, 5000 );
+
     io.emit('player:CONNECT', players[id]);
-    return res.status(200).send({id});
+    return res.status(200).send(id);
   },
 
   disconnect(req, res){
@@ -48,6 +67,21 @@ module.exports = {
     return res.status(200).send(true);
   },
 
+  check(req, res){
+    let { id } = req.query;
+ 
+    if(!id){ return res.status(401).send(false); }
+
+    clearTimeout(players[id].timeout);
+    players[id].timeout = setTimeout( () => {
+      console.log("timeout")
+      io.emit('player:DISCONNECT', { id });
+      players[id].active = false;
+    }, 6000 );
+
+    return res.status(200).send(true);
+  },
+
 	hit(req, res){
     /*
      * data = {
@@ -56,7 +90,7 @@ module.exports = {
      * }
      */
 
-    let { shooter, hitted } = req.body;
+    let { shooter, hitted } = req.query;
 
     console.log(`[SHOOTER] ${shooter} -> [HIT] ${hitted}`);
 
@@ -84,7 +118,7 @@ module.exports = {
 	},
 
   shot(req, res){
-    let shooter = req.body.player;
+    let shooter = req.query.player;
 
     console.log("[SHOT]: ", shooter);
 

@@ -18,7 +18,6 @@ module.exports = {
 
 		this.PORT = nconf.get('PORT') || process.env.NODE_PORT;
 
-
     this.app  = express();
 		this.http = Server(this.app);
 

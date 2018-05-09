@@ -11,6 +11,7 @@ define( require => {
     events : {
       "click [js-connect]"    : "TESTconnect",
       "click [js-disconnect]" : "disconnect",
+      "click [js-check]"      : "TESTcheck",
       "click [js-shot]"       : "TESTshot",
       "click [js-hit]"        : "TESThit"
     },
@@ -75,7 +76,17 @@ define( require => {
     },
 
     TESTconnect : function(event){
-      ajax('/connect');
+      $.ajax({ url : '/connect'});
+    },
+
+    TESTcheck : function(event){
+      let id = event.currentTarget.getAttribute("js-check");
+
+      $.ajax({
+        url    : '/check',
+        method : 'GET',
+        data   : { id }
+      });
     },
 
     TESTshot : function(event){
